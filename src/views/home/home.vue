@@ -8,6 +8,16 @@
     <HomeRecommends :recommends="recommends"></HomeRecommends>
     <FeatureView></FeatureView>
     <TabControl :titles="['流行','新款','精选']"></TabControl>
+    <ul>
+      <li>列表一</li>
+      <li>列表一</li>
+      <li>列表一</li>
+      <li>列表一</li>
+      <li>列表一</li>
+      <li>列表一</li>
+      <li>列表一</li>
+      <li>列表一</li>
+    </ul>
   </div>
 </template>
 
