@@ -18,6 +18,11 @@
   line-height: 44px;
   display: flex;
   background-color:var(--color-tint);
+  position: fixed;
+  left:0;
+  top:0;
+  right:0;
+  z-index:9;
 }
 .left {
   width: 60px;
