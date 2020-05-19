@@ -1,7 +1,7 @@
 <template>
   <div class="tab-control">
       <div v-for="(item ,index) in titles" :key="index" class="tab-control-item" :class="{active:index===currentIndex}" @click="pickOptions(index)">
-          <span :class="showLine">{{item}}</span>
+          <span>{{item}}</span>
       </div>
   </div>
 </template>
@@ -13,14 +13,14 @@
     display:flex;
     text-align: center;
     font-size:15px;
+    background-color: #fff;
 }
 .tab-control-item{
     flex:1;
 }
-.active{
-    color:var(--color-higt-text)
-}
+
 .active span{
+    color:var(--color-tint);
     border-bottom: 3px solid var(--color-tint);
 }
 </style>
@@ -43,6 +43,7 @@ export default {
   methods:{
       pickOptions(index){
           this.currentIndex=index;
+
       }
   }
 };

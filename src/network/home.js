@@ -1,8 +1,16 @@
-import {request} from "./request"
-console.log(request)
+import {request} from "./request";
 export function getHomeMultidata(){
-    console.log()
     return request({
         url:'/home/multidata'
     });
-} 
+}
+export function getHomeGoods(type,page){
+    console.log(type,page);
+    return request({
+        url:'/home/data',
+        params:{
+            type,
+            page
+        }
+    })
+}

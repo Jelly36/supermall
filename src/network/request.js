@@ -6,7 +6,7 @@ export function request(config) {
     });
 
     instance.interceptors.response.use(function(res){
-        return res.data.data;
+        return res.data;
     })
     return instance(config);
 }
