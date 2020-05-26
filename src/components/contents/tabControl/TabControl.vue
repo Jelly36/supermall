@@ -1,6 +1,10 @@
 <template>
   <div class="tab-control">
-      <div v-for="(item ,index) in titles" :key="index" class="tab-control-item" :class="{active:index===currentIndex}" @click="pickOptions(index)">
+      <div v-for="(item ,index) in titles" 
+            :key="index" 
+            class="tab-control-item" 
+            :class="{active:index===currentIndex}"
+            @click="pickOptions(index)">
           <span>{{item}}</span>
       </div>
   </div>
@@ -43,8 +47,11 @@ export default {
   methods:{
       pickOptions(index){
           this.currentIndex=index;
-
+            this.$emit("tabClick",index)
       }
+  },
+  mounted(){
+      
   }
 };
 </script>
