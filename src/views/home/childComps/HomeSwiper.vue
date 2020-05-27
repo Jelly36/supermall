@@ -50,10 +50,10 @@ export default {
   },
   methods:{
     imgLoad(){
-      console.log("----")
+      
       if(!this.isLoad){
         this.$emit('swiperimgLoad')
-      }
+          }
       this.isLoad=true;
     }
   }

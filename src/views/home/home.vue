@@ -8,10 +8,10 @@
     </NavBar>
     <TabControl
         :titles="['流行','新款','精选']"
-        class="tab-control"
+        class="tab-control tabControl"
         @tabClick="tabClick"
-        ref="tabControl"
-        :class="{fixed:isFixed}"
+        ref="tabControl1"
+        v-show='isTabFixed'
       ></TabControl>
     <Scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load='true' @pullUpLoad="loadMore">
       <HomeSwiper :banners="banners" @swiperimgLoad='swiperimgLoad'></HomeSwiper>
@@ -21,8 +21,8 @@
         :titles="['流行','新款','精选']"
         class="tab-control"
         @tabClick="tabClick"
-        ref="tabControl"
-        :class="{fixed:isFixed}"
+        ref="tabControl2"
+        
       ></TabControl>
       <GoodsList :goods="goods[currentType].list" />
     </Scroll>
@@ -40,12 +40,13 @@
   text-align: center;
   color: #fff;
 }
-.tab-control {
-  top: 44px;
+.tabControl{
+  position: relative;
+    z-index:999;
 }
 .fixed{
   position: fixed; 
-}
+} 
 .content {
   position: absolute; 
   top: 44px;
@@ -82,8 +83,10 @@ export default {
         'sell': { page: 0, list: [] }
       },
       isShowBackUp:false,
-      isFixed:false,
-      tabOffsetTop:null
+      isTabFixed:false,
+      tabOffsetTop:null,
+      positionTag:null,
+      saveY:0
     };
   },
   components: {
@@ -104,7 +107,6 @@ export default {
   },
   methods: {
     tabClick(index) {
-      // console(index);
       switch (index) {
         case 0: this.currentType = 'pop';
           break
@@ -112,6 +114,9 @@ export default {
           break
         case 2: this.currentType = "sell";
       }
+    
+      this.$refs.tabControl1.currentType=index
+      this.$refs.tabControl2.currentType=index
     },
     // 网络请求
     getHomeMultidata() {
@@ -134,7 +139,7 @@ export default {
     },
     contentScroll(position){
       this.isShowBackUp=-position.y>1000
-      this.isFixed=-position.y>this.tabOffsetTop
+      this.isTabFixed=-position.y>this.tabOffsetTop
     },
     // 上拉加载更多
     loadMore(){
@@ -142,9 +147,16 @@ export default {
       
     },
     swiperimgLoad(){
-      this.tabOffsetTop=this.$refs.tabControl.$el.offsetTop
+      this.tabOffsetTop=this.$refs.tabControl2.$el.offsetTop
       
       }
+  },
+  deactivated(){
+    this.saveY=this.$refs.scroll.getScrollY()
+  },
+  activated(){
+    this.saveY=this.$refs.scroll.scrollTo(0,this.saveY,0);
+    this.$refs.scroll.refresh()
   },
   mounted(){
     const refresh=debouce(this.$refs.scroll.refresh,500);

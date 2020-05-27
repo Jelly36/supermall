@@ -22,6 +22,11 @@ const routes = [
     {
         path: '/profile',
         component: () => import("../views/profile/profile")
+    },
+    {
+        path: '/detail/:iid',
+        component: () => import("../views/detail/Detail"),
+        meta:{keepAlive: true,}
     }
 ]
 const router = new VueRouter({
