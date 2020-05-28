@@ -86,7 +86,8 @@ export default {
       isTabFixed:false,
       tabOffsetTop:null,
       positionTag:null,
-      saveY:0
+      saveY:0,
+      itemListener:null
     };
   },
   components: {
@@ -152,17 +153,21 @@ export default {
       }
   },
   deactivated(){
-    this.saveY=this.$refs.scroll.getScrollY()
+    this.saveY=this.$refs.scroll.getScrollY();
+    
+    this.$bus.$off('imloadSuccess',this.itemListener)
   },
   activated(){
     this.saveY=this.$refs.scroll.scrollTo(0,this.saveY,0);
-    this.$refs.scroll.refresh()
+    this.$refs.scroll.refresh();
+
   },
   mounted(){
     const refresh=debouce(this.$refs.scroll.refresh,500);
-    this.$bus.$on('imgloadSuccess',()=>{
+    this.itemListener=()=>{
       refresh()
-    })
+    }
+    this.$bus.$on('imgloadSuccess',this.itemListener)
 
    
     

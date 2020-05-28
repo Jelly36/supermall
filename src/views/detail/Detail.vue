@@ -8,6 +8,7 @@
     <DetailShopInfo :shop="shop"></DetailShopInfo>
     <DetailParamsInfo :paramsInfo='paramsInfo'></DetailParamsInfo>
     <DetailCommentsInfo :commentsInfo="commentsInfo"></DetailCommentsInfo>
+    <GoodsList :goods="recommendInfo"></GoodsList>
     </Scroll>
   </div>
 </template>
@@ -33,9 +34,11 @@ import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailParamsInfo from  "./childComps/DetailParamsInfo";
 import DetailCommentsInfo from  "./childComps/DetailCommentsInfo";
+import GoodsList from  "@/components/contents/goods/GoodsList"
 
 import Scroll from "@/components/common/scroll/Scroll"
-import { getDetail,Shop,Goods,GoodsParam} from "network/detail.js";
+import { getDetail,Shop,Goods,GoodsParam,getRecommond} from "network/detail.js";
+import {debouce} from "common/utils"
 export default {
   name: "Detail",
   data() {
@@ -46,7 +49,8 @@ export default {
       shop: {},
       paramsInfo:{},  
       detailInfo:{},
-      commentsInfo:{}
+      commentsInfo:{},
+      recommendInfo:[]
     };
   },
   components: {
@@ -56,6 +60,7 @@ export default {
     DetailShopInfo,
     DetailParamsInfo,
     DetailCommentsInfo,
+    GoodsList,
     Scroll,
 
   },
@@ -63,6 +68,7 @@ export default {
   },
   created() {
     this.iid = this.$route.params.iid;
+      
     getDetail(this.iid).then(res => {
       // 1、获取轮播图数据
       const data = res.result;
@@ -82,6 +88,17 @@ export default {
         console.log(this.commentsInfo)
       } 
     });
+    getRecommond().then(res=>{
+      this.recommendInfo=res.data.list;
+      console.log(res.data.list)
+    })
+  },
+  mounted(){
+    const refresh=debouce(this.$refs.scroll.refresh,500);
+     this.itemListener=()=>{
+      refresh()
+    }
+    this.$bus.$on('imgloadSuccess',this.itemListener)
   }
 };
 </script>
