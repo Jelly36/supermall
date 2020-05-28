@@ -1,7 +1,6 @@
 <!--  -->
 <template>
-  <div>
-      <NavBar class="navbar">
+  <NavBar class="navbar">
           <div slot="left" class="backTo" @click='backClick'>
               <img src="~assets/imgs/common/back.svg" alt="">
           </div>
@@ -9,7 +8,6 @@
               <div v-for='(item,index) in titles' :key="index" :class='{isActive:index===currentIndex}' @click="pickTitles(index)">{{item}}</div>
           </div>
       </NavBar>
-  </div>
 </template>
 
 <style scoped>

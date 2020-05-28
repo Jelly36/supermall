@@ -1,10 +1,14 @@
 <!--  -->
 <template>
-  <div>
-    <DetailNavBar></DetailNavBar>
+  <div id="detail">
+    <DetailNavBar class="detail-nav"></DetailNavBar>
+    <Scroll class="content" ref="scroll">
     <DetailSwiper class="swiper" :ban="banners"></DetailSwiper>
     <DetailBaseInfo :goods="goods"></DetailBaseInfo>
     <DetailShopInfo :shop="shop"></DetailShopInfo>
+    <DetailParamsInfo :paramsInfo='paramsInfo'></DetailParamsInfo>
+    <DetailCommentsInfo :commentsInfo="commentsInfo"></DetailCommentsInfo>
+    </Scroll>
   </div>
 </template>
 
@@ -12,13 +16,26 @@
 .swiper {
   margin-top: 44px;
 }
+#detail{
+  position: relative;
+  z-index: 9;
+  background: #fff;
+  height: 100vh;
+}
+.content{
+  height: calc(100% - 44px);
+}
 </style>
 <script>
 import DetailNavBar from "./childComps/DetailNavBar";
 import DetailSwiper from "./childComps/DetailSwiper";
 import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
-import { getDetail,Shop,Goods} from "network/detail.js";
+import DetailParamsInfo from  "./childComps/DetailParamsInfo";
+import DetailCommentsInfo from  "./childComps/DetailCommentsInfo";
+
+import Scroll from "@/components/common/scroll/Scroll"
+import { getDetail,Shop,Goods,GoodsParam} from "network/detail.js";
 export default {
   name: "Detail",
   data() {
@@ -26,16 +43,24 @@ export default {
       iid: null,
       banners: null,
       goods: {},
-      shop: {}
+      shop: {},
+      paramsInfo:{},  
+      detailInfo:{},
+      commentsInfo:{}
     };
   },
   components: {
     DetailNavBar,
     DetailSwiper,
     DetailBaseInfo,
-    DetailShopInfo
+    DetailShopInfo,
+    DetailParamsInfo,
+    DetailCommentsInfo,
+    Scroll,
+
   },
-  methods: {},
+  methods: {
+  },
   created() {
     this.iid = this.$route.params.iid;
     getDetail(this.iid).then(res => {
@@ -46,8 +71,16 @@ export default {
       // 2、获取商品信息
       this.goods=new Goods(data.itemInfo,data.columns,data.shopInfo.services);
       // 3、创建店铺信息
-      this.shop=new Shop(data.shopInfo)
-          
+      this.shop=new Shop(data.shopInfo);
+      // 4、取出商品详情信息
+      this.detailInfo=data.detailInfo
+      // 5、商品参数
+      this.paramsInfo=new GoodsParam(data.itemParams.info,data.itemParams.rule)
+      // 6、商品评论
+      if(data.rate.cRate!=0){
+        this.commentsInfo=data.rate.list[0];
+        console.log(this.commentsInfo)
+      } 
     });
   }
 };

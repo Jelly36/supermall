@@ -30,3 +30,10 @@ export class Shop{
         this.cGoods=shopInfo.cGoods;
     }
 }
+export class GoodsParam{
+    constructor(info,rule){
+        this.image=info.image?info.image[0]:'';
+        this.infos=info.set;
+        this.sizes=rule.tables;
+    }
+}

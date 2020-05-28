@@ -62,6 +62,7 @@
   display:flex;
   justify-content: space-between;
   padding:16px;
+  border-bottom: 1px solid #e6e6e6;
 }
 .desc {
   display: -webkit-box;
@@ -116,6 +117,9 @@
     vertical-align: middle;
     margin-right:10px;
   }
+}
+.van-cell{
+  border-bottom:1px solid #e6e6e6;
 }
 </style>
 <script>
