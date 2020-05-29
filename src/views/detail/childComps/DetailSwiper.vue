@@ -1,7 +1,7 @@
 <template>
   <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
     <van-swipe-item v-for="(item, index) in ban" :key="index">
-      <img :src="item" alt class="bannerImg" />
+      <img :src="item" alt class="bannerImg"  @load="imgLoad"/>
     </van-swipe-item>
   </van-swipe>
 </template>
@@ -41,12 +41,13 @@ export default {
   },
   created() {},
   methods: {
-    // imgLoad(){
-    //   if(!this.isLoad){
-    //     this.$emit('swiperimgLoad')
-    //       }
-    //   this.isLoad=true;
-    // }
+    imgLoad(){
+      if(!this.isLoad){
+        console.log("轮播")
+        this.$emit('swiperimgLoad')
+          }
+      this.isLoad=true;
+    }
   }
 };
 </script>

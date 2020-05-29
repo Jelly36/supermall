@@ -69,7 +69,7 @@ import HomeSwiper from "./childComps/HomeSwiper";
 import HomeRecommends from "./childComps/HomeRecommends";
 import FeatureView from "./childComps/FeatureView";
 
-import {debouce} from "common/utils"
+import mixin from "common/mixin"
 export default {
   data() {
     return {
@@ -86,8 +86,7 @@ export default {
       isTabFixed:false,
       tabOffsetTop:null,
       positionTag:null,
-      saveY:0,
-      itemListener:null
+      saveY:0
     };
   },
   components: {
@@ -100,6 +99,7 @@ export default {
     Scroll,
     BackTop
   },
+  mixins:[mixin],
   created() {
     this.getHomeMultidata();
     this.getHomeGoods('pop');
@@ -155,7 +155,7 @@ export default {
   deactivated(){
     this.saveY=this.$refs.scroll.getScrollY();
     
-    this.$bus.$off('imloadSuccess',this.itemListener)
+    this.$bus.$off('imgloadSuccess',this.itemListener)
   },
   activated(){
     this.saveY=this.$refs.scroll.scrollTo(0,this.saveY,0);
@@ -163,11 +163,7 @@ export default {
 
   },
   mounted(){
-    const refresh=debouce(this.$refs.scroll.refresh,500);
-    this.itemListener=()=>{
-      refresh()
-    }
-    this.$bus.$on('imgloadSuccess',this.itemListener)
+   
 
    
     
