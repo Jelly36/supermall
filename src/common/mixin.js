@@ -7,7 +7,6 @@ export default{
     },
     mounted() {
         const refresh=debouce(this.$refs.scroll.refresh,500);
-        console.log("已经混入")
         this.itemListener=()=>{
           refresh()
         }

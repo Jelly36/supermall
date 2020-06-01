@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div id="detail">
-    <DetailNavBar class="detail-nav" @getTitleTop="getTitleTop"></DetailNavBar>
+    <DetailNavBar class="detail-nav" @getTitleTop="getTitleTop" ref="nav"></DetailNavBar>
     <Scroll class="content" ref="scroll" :probeType='3' @scroll="contentScroll">
       <DetailSwiper ref="swiper" class="swiper" :ban="banners" @swiperimgLoad='swiperimgLoad'></DetailSwiper>
       <DetailBaseInfo :goods="goods"></DetailBaseInfo>
@@ -59,6 +59,7 @@ export default {
       recommendInfo: [],
       themeTopYs:[],
       getThemeTopY:null
+      // currentIndx:0
     };
   },
   components: {
@@ -89,6 +90,7 @@ export default {
         for(let i=0;i<length;i++){
           if((i<length-1&&-position.y>this.themeTopYs[i]&&-position.y<this.themeTopYs[i+1])||(i==length-i&&-position.y>this.themeTopYs[i])){
             console.log(i)
+            this.$refs.nav.currentIndex=i
           }
         }
     }
