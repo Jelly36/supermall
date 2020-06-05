@@ -1,5 +1,6 @@
 import {debouce} from "./utils"
-export default{
+import BackTop from "@/components/contents/backtop/BackTop";
+export const itemListener={
     data(){
         return{
             itemListener:null
@@ -11,5 +12,22 @@ export default{
           refresh()
         }
         this.$bus.$on('imgloadSuccess',this.itemListener)
+        console.log("okok")
     },
+}
+export const backTopMixin={
+    data(){
+        return{
+            isShowBackUp:false,
+        }
+    },
+    methods: {
+        backTop(){
+            this.$refs.scroll.scrollTo(0,0);
+          },
+    },
+    components:{
+        BackTop
+    },
+
 }

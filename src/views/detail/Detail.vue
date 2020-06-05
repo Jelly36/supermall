@@ -3,6 +3,9 @@
   <div id="detail">
     <DetailNavBar class="detail-nav" @getTitleTop="getTitleTop" ref="nav"></DetailNavBar>
     <Scroll class="content" ref="scroll" :probeType='3' @scroll="contentScroll">
+      <ul>
+        <li v-for="(item,index) in $store.state.cartList" :key="index">{{item}}</li>
+      </ul>
       <DetailSwiper ref="swiper" class="swiper" :ban="banners" @swiperimgLoad='swiperimgLoad'></DetailSwiper>
       <DetailBaseInfo :goods="goods"></DetailBaseInfo>
       <DetailShopInfo :shop="shop"></DetailShopInfo>
@@ -10,7 +13,9 @@
       <DetailCommentsInfo ref="comments" :commentsInfo="commentsInfo"></DetailCommentsInfo>
       <GoodsList ref="recommend" :goods="recommendInfo" class="recommends"></GoodsList>
     </Scroll>
-    <DetailBottomNav></DetailBottomNav>
+
+    <BackTop @click.native="backTop" v-show="isShowBackUp"></BackTop>
+    <DetailBottomNav @addCart="addToCart"></DetailBottomNav>
   </div>
 </template>
 
@@ -42,6 +47,7 @@ import DetailBottomNav from "./childComps/DetailBottomNav";
 import GoodsList from "@/components/contents/goods/GoodsList";
 
 import Scroll from "@/components/common/scroll/Scroll";
+import {backTopMixin,itemListener} from "common/mixin"
 import {
   getDetail,
   Shop,
@@ -49,7 +55,6 @@ import {
   GoodsParam,
   getRecommond
 } from "network/detail.js";
-import mixin from "common/mixin";
 export default {
   name: "Detail",
   data() {
@@ -78,7 +83,7 @@ export default {
     DetailBottomNav,
     Scroll,
   },
-  mixins: [mixin],
+  mixins: [itemListener,backTopMixin],
   methods: {
     getTitleTop(index) {
       this.$refs.scroll.scrollTo(0,-this.themeTopYs[index],200)
@@ -92,22 +97,31 @@ export default {
       this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
     },
     contentScroll(position){
+      this.isShowBackUp=-position.y>1000
       const length=this.themeTopYs.length;
         for(let i=0;i<length;i++){
           if((i<length-1&&-position.y>this.themeTopYs[i]&&-position.y<this.themeTopYs[i+1])||(i==length-1&&-position.y>this.themeTopYs[i])){
-            console.log(i)
             this.$refs.nav.currentIndex=i
           }
         }
+    },
+    addToCart(){
+      console.log("enen")
+      const product={};
+      product.image=this.banners[0];
+      product.title=this.goods.title;
+      product.desc=this.goods.desc;
+      product.price=this.goods.realPrice
+      product.iid=this.iid
+      this.$store.commit("addCart",product)
+
     }
-    
   },
   created() {
     this.iid = this.$route.params.iid;
     getDetail(this.iid).then(res => {
       // 1、获取轮播图数据
       const data = res.result;
-      console.log(data);
       this.banners = data.itemInfo.topImages;
       // 2、获取商品信息
       this.goods = new Goods(

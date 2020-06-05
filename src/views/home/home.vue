@@ -69,7 +69,7 @@ import HomeSwiper from "./childComps/HomeSwiper";
 import HomeRecommends from "./childComps/HomeRecommends";
 import FeatureView from "./childComps/FeatureView";
 
-import mixin from "common/mixin"
+import {itemListener} from "common/mixin"
 export default {
   data() {
     return {
@@ -99,7 +99,7 @@ export default {
     Scroll,
     BackTop
   },
-  mixins:[mixin],
+  mixins:[itemListener],
   created() {
     this.getHomeMultidata();
     this.getHomeGoods('pop');
