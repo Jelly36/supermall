@@ -8,8 +8,9 @@
       <DetailShopInfo :shop="shop"></DetailShopInfo>
       <DetailParamsInfo ref="params" :paramsInfo="paramsInfo"></DetailParamsInfo>
       <DetailCommentsInfo ref="comments" :commentsInfo="commentsInfo"></DetailCommentsInfo>
-      <GoodsList ref="recommend" :goods="recommendInfo"></GoodsList>
+      <GoodsList ref="recommend" :goods="recommendInfo" class="recommends"></GoodsList>
     </Scroll>
+    <DetailBottomNav></DetailBottomNav>
   </div>
 </template>
 
@@ -26,6 +27,9 @@
 .content {
   height: calc(100% - 44px);
 }
+.recommends{
+  padding-bottom: 88px;
+}
 </style>
 <script>
 import DetailNavBar from "./childComps/DetailNavBar";
@@ -34,6 +38,7 @@ import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailParamsInfo from "./childComps/DetailParamsInfo";
 import DetailCommentsInfo from "./childComps/DetailCommentsInfo";
+import DetailBottomNav from "./childComps/DetailBottomNav";
 import GoodsList from "@/components/contents/goods/GoodsList";
 
 import Scroll from "@/components/common/scroll/Scroll";
@@ -70,6 +75,7 @@ export default {
     DetailParamsInfo,
     DetailCommentsInfo,
     GoodsList,
+    DetailBottomNav,
     Scroll,
   },
   mixins: [mixin],
@@ -88,7 +94,7 @@ export default {
     contentScroll(position){
       const length=this.themeTopYs.length;
         for(let i=0;i<length;i++){
-          if((i<length-1&&-position.y>this.themeTopYs[i]&&-position.y<this.themeTopYs[i+1])||(i==length-i&&-position.y>this.themeTopYs[i])){
+          if((i<length-1&&-position.y>this.themeTopYs[i]&&-position.y<this.themeTopYs[i+1])||(i==length-1&&-position.y>this.themeTopYs[i])){
             console.log(i)
             this.$refs.nav.currentIndex=i
           }
